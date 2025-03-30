@@ -15,9 +15,9 @@
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
-            "16": "icon.svg",
-            "48": "icon.svg",
-            "128": "icon.svg"
+            "16": "ocr16.png",
+            "48": "ocr48.png",
+            "128": "ocr128.png"
         }
     },
     "background": {
