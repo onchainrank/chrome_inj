@@ -1,6 +1,6 @@
 # onchainrank Bullx NEO injector
 
-![image](https://github.com/user-attachments/assets/c98eff40-2203-4c71-8ec8-b5244f9b1c9b)
+![image](https://github.com/user-attachments/assets/1e3fb411-7bb1-453e-9079-d109df40d5d5)
 
 ## Overview
 
