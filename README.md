@@ -1,5 +1,9 @@
 # onchainrank Bullx NEO injector
 
+![image](https://github.com/user-attachments/assets/aaf2f58c-db9f-4fa8-bcea-93e70749a54d)
+
+
+
 ## Overview
 
 The **onchainrank Bullx NEO injector** is a Chrome extension that dynamically injects an iframe containing the onchainrank trading data into pages on `neo.bullx.io` based on an `address` query parameter. It also includes a settings GUI for entering an API key, which is automatically added as an `Authorization` header for HTTP requests sent to `http://localhost:3000/single/*`.
