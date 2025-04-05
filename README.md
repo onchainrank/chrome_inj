@@ -1,10 +1,8 @@
-# onchainrank notifier
+# OnChainRank Injector Extension
 
-onchainrank notifier is a Chrome extension built with Manifest V3 that listens for notify events from the Socket.IO server at https://api.onchainrank.com. When an event is received, the extension opens:
+## Overview
 
-- A new tab to the BullX Neo trading panel URL using the provided mint address:
-  `https://neo.bullx.io/trading?address={mint}&chainId=1399811149`
-- A second tab for an optional URL if it is provided in the event payload.
+The **OnChainRank Injector Extension** is a Chrome extension that dynamically injects an iframe containing the OnChainRank website into pages on `neo.bullx.io/terminal` based on an `address` query parameter. It also includes a settings GUI for entering an API key, which is automatically added as an `Authorization` header for HTTP requests sent to `http://localhost:3000/single/*`.
 
 ## Disclaimer
 
@@ -13,80 +11,74 @@ This extension is designed to provide general information about interesting meme
 
 ## Features
 
-**Real-Time Notifications:**
+- **Dynamic Iframe Injection:**  
+  When a URL contains an `address` parameter, the extension injects an iframe that loads the URL `http://localhost:3000/single/{address}`. The iframe is styled to have a maximum height of 200px.
 
-- Listens to `notify` events from `https://api.onchainrank.com` using a local copy of the Socket.IO client.
+- **Tab Visibility Management:**  
+  The extension monitors tab visibility. When the tab is hidden, the iframe is removed (to close any unnecessary WebSocket connections). When the tab is visible again, the iframe is re-injected.
 
-**API Key Support:**
+- **API Key Settings:**  
+  A settings popup allows users to enter and save an API key. This key is stored using Chrome's local storage.
 
-- Configure your API key via the options page. The API key is appended to the connection query. An API key can be generated on the [onchainrank.com](https://onchainrank.com) website.
+- **Request Interception:**  
+  A background service worker intercepts outgoing requests to `http://localhost:3000/single/*` and automatically appends an `Authorization` header with the stored API key.
 
-**Automatic Tab Opening:**
+## Requirements
 
-- Always opens the BullX Neo trading panel URL using the provided mint address.
-- Optionally opens another URL if provided in the event payload.
-
-**Connection Status Display:**
-
-- The popup shows the current WebSocket connection status (Connected/Disconnected).
-
-**Keep-Alive Mechanism:**
-
-- Uses Chrome's Alarms API to check and re-establish the connection if it drops.
-
-**Clean, Minimal UI:**
-
-- Uses lowercase branding with a white background and a custom icon (`ocr128.png`).
+- Google Chrome with support for Manifest V3.
+- Developer mode enabled for loading unpacked extensions.
 
 ## Installation
 
-1. **Clone or Download the Repository:**
+1. Open Chrome and navigate to `chrome://extensions/`.
+2. Enable **Developer mode** (toggle switch in the top-right corner).
+3. Click **Load unpacked** and select your extension’s folder.
 
-```bash
-   git clone [https://github.com/yourusername/onchainrank-notifier.git](https://github.com/yourusername/onchainrank-notifier.git)
-   cd onchainrank-notifier
-```
-
-2. **Load the Extension in Chrome:**
-
-- Open Chrome and navigate to `chrome://extensions/`.
-- Enable **Developer mode** (toggle in the top-right corner).
-- Click **"Load unpacked"** and select the repository folder.
-
-3. **Configure the Extension:**
-
-- Click on the extension icon to open the popup.
-- Click on **"Settings"** to open the options page.
-- Enter your API key (which can be generated on [onchainrank.com](https://onchainrank.com)) and click **"Save"**.
+4. Configure the extension:
+   - Click the extension icon in the Chrome toolbar.
+   - In the popup, enter your API key and click **Save**.
 
 ## Usage
 
-**Real-Time Notifications:**
+1. **Iframe Injection:**  
+    Navigate to a URL such as:
+   `https://neo.bullx.io/terminal?address=YourAddressHere`
 
-When a `notify` event is received, the extension automatically opens:
+The extension will extract the `address` parameter and inject an iframe that loads:
 
-- A new tab to:
-  `https://neo.bullx.io/trading?address={mint}&chainId=1399811149`
-- And, if provided, a second tab to the event's `url`.
+2. **Request Authorization:**  
+   The background service worker intercepts requests to `http://localhost:3000/single/*` and appends an `Authorization` header with the stored API key.
 
-**Connection Status:**
+3. **Tab Visibility Management:**  
+   When you switch to another tab, the extension removes the iframe to close WebSocket connections. When you return, the iframe is re-injected.
 
-- The popup displays the current WebSocket connection status.
+## Customization
 
-**Keep-Alive:**
+- **Iframe Height:**  
+  Adjust the height by modifying the `iframe.style.height` property in **content.js**.
 
-- The extension uses the Chrome Alarms API to wake the service worker every minute and re-establish the Socket.IO connection if needed.
+- **API Key Storage:**  
+  The API key is managed via Chrome's `storage.local` API. Update **popup.js** or **background.js** if you need to change the behavior.
 
-## Development
+- **Icon:**  
+  The extension uses **icon.svg**. Replace or update this file to change the extension icon.
 
-**Local Socket.IO Client**
+## Troubleshooting
 
-The extension loads Socket.IO locally from `socket.io.min.js` (v4.8.1). Ensure that this file is included in the extension folder.
+- **Icon Visibility:**  
+  Verify that **icon.svg** is in the extension folder and correctly referenced in **manifest.json**.
 
-**Keep-Alive Mechanism**
+- **Iframe Injection Issues:**  
+  Check the browser console for errors. Ensure the target elements on `neo.bullx.io/terminal` are present. The polling mechanism in **content.js** handles dynamic content.
 
-Due to the ephemeral nature of Manifest V3 service workers, the extension uses Chrome's Alarms API to periodically check and reinitialize the Socket.IO connection if it becomes inactive.
+- **Authorization Header Problems:**  
+  Ensure the API key is saved correctly in the popup. The background service worker uses this key to set the `Authorization` header.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+- [Chrome Extension Documentation](https://developer.chrome.com/docs/extensions/)
+- Community feedback and support
