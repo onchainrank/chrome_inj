@@ -69,18 +69,18 @@
 
   // Listen for visibility changes (i.e., tab switching)
   document.addEventListener("visibilitychange", function () {
-    if (document.visibilityState === "hidden") {
-      // When the tab is hidden, remove the iframe to close the websocket connection.
-      removeIframe();
-      console.log("Tab hidden: iframe removed.");
-    } else if (document.visibilityState === "visible") {
-      // When the tab becomes visible again, re-inject the iframe.
-      injectIframe();
-      // If the target containers are not yet available, restart polling.
-      if (!currentIframe) {
-        startPolling();
-      }
-      console.log("Tab visible: iframe injected if container available.");
-    }
+    // if (document.visibilityState === "hidden") {
+    //   // When the tab is hidden, remove the iframe to close the websocket connection.
+    //   removeIframe();
+    //   console.log("Tab hidden: iframe removed.");
+    // } else if (document.visibilityState === "visible") {
+    //   // When the tab becomes visible again, re-inject the iframe.
+    //   injectIframe();
+    //   // If the target containers are not yet available, restart polling.
+    //   if (!currentIframe) {
+    //     startPolling();
+    //   }
+    //   console.log("Tab visible: iframe injected if container available.");
+    // }
   });
 })();

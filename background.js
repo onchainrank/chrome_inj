@@ -1,36 +1,74 @@
-// background.js
+// Load the local Socket.IO client library
+importScripts("socket.io.min.js");
 
-// Global variable to store the API key
-let authKey = "";
+// Global connection status variable
+let connectionStatus = "Disconnected";
+let socket;
 
-// Retrieve the API key when the service worker starts
-chrome.storage.local.get(["apiKey"], (result) => {
-  if (result.apiKey) {
-    authKey = result.apiKey;
-    console.log("Auth key loaded:", authKey);
+// Initialize the Socket.IO connection using the stored API key.
+function initSocket(apiKey) {
+  // If a socket exists and is already connected, do nothing.
+  if (socket && socket.connected) {
+    return;
   }
-});
+  // Connect using only WebSocket transport and include the API key as a query parameter.
+  socket = io("https://api.onchainrank.com", {
+    transports: ["websocket"],
+    query: { apiKey: apiKey },
+  });
 
-// Listen for changes to the API key and update the global variable
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "local" && changes.apiKey) {
-    authKey = changes.apiKey.newValue;
-    console.log("Auth key updated:", authKey);
-  }
-});
+  socket.on("connect", () => {
+    connectionStatus = "Connected";
+    console.log("Connected to Socket.IO server");
+  });
 
-// Intercept requests to the target URL and add the Authorization header
-chrome.webRequest.onBeforeSendHeaders.addListener(
-  (details) => {
-    if (authKey) {
-      details.requestHeaders.push({
-        name: "Authorization",
-        value: authKey,
-      });
-      console.log("Authorization header added:", authKey);
+  socket.on("disconnect", () => {
+    connectionStatus = "Disconnected";
+    console.log("Disconnected from Socket.IO server");
+  });
+
+  // Listen for 'notify' events
+  socket.on("notify", (payload) => {
+    console.log("Received notify event:", payload);
+    const mintAddress = payload.mint;
+    const optionalUrl = payload.url;
+
+    // Always open the Neo Bullx terminal tab
+    const terminalUrl = `https://neo.bullx.io/terminal?address=${mintAddress}&chainId=1399811149`;
+    chrome.tabs.create({ url: terminalUrl });
+
+    // Open the provided URL in a new tab if it exists and is not null
+    if (optionalUrl) {
+      chrome.tabs.create({ url: optionalUrl });
     }
-    return { requestHeaders: details.requestHeaders };
-  },
-  { urls: ["http://localhost:3000/single/*"] },
-  ["blocking", "requestHeaders", "extraHeaders"]
-);
+  });
+}
+
+// Set an alarm to help keep the service worker active and check the connection every minute.
+chrome.alarms.create("keepAlive", { periodInMinutes: 1 });
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "keepAlive") {
+    console.log("Keep-alive alarm triggered");
+    // If socket is not defined or disconnected, reinitialize the connection.
+    if (!socket || socket.disconnected) {
+      console.log("Socket is not active, reinitializing connection.");
+      chrome.storage.sync.get("apiKey", (data) => {
+        const apiKey = data.apiKey || "";
+        initSocket(apiKey);
+      });
+    }
+  }
+});
+
+// Get the API key from storage and initialize the socket.
+chrome.storage.sync.get("apiKey", (data) => {
+  const apiKey = data.apiKey || "";
+  initSocket(apiKey);
+});
+
+// Listen for messages (e.g. from the popup) requesting the connection status.
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === "getConnectionStatus") {
+    sendResponse({ status: connectionStatus });
+  }
+});
