@@ -1,8 +1,8 @@
-# OnChainRank Injector Extension
+# onchainrank Bullx NEO injector
 
 ## Overview
 
-The **OnChainRank Injector Extension** is a Chrome extension that dynamically injects an iframe containing the OnChainRank website into pages on `neo.bullx.io/terminal` based on an `address` query parameter. It also includes a settings GUI for entering an API key, which is automatically added as an `Authorization` header for HTTP requests sent to `http://localhost:3000/single/*`.
+The **onchainrank Bullx NEO injector** is a Chrome extension that dynamically injects an iframe containing the onchainrank trading data into pages on `neo.bullx.io` based on an `address` query parameter. It also includes a settings GUI for entering an API key, which is automatically added as an `Authorization` header for HTTP requests sent to `http://localhost:3000/single/*`.
 
 ## Disclaimer
 
@@ -69,7 +69,7 @@ The extension will extract the `address` parameter and inject an iframe that loa
   Verify that **icon.svg** is in the extension folder and correctly referenced in **manifest.json**.
 
 - **Iframe Injection Issues:**  
-  Check the browser console for errors. Ensure the target elements on `neo.bullx.io/terminal` are present. The polling mechanism in **content.js** handles dynamic content.
+  Check the browser console for errors. Ensure the target elements on `neo.bullx.io` are present. The polling mechanism in **content.js** handles dynamic content.
 
 - **Authorization Header Problems:**  
   Ensure the API key is saved correctly in the popup. The background service worker uses this key to set the `Authorization` header.
