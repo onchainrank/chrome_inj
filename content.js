@@ -7,7 +7,7 @@
     return;
   }
 
-  // Build the OnChainRank website URL using the extracted address
+  // Build the OnChainRank website URL using the extracted address (updated domain)
   const onChainRankUrl = `https://app.onchainrank.com/single/${address}`;
 
   let currentIframe = null;
@@ -18,7 +18,7 @@
     const iframe = document.createElement("iframe");
     iframe.src = onChainRankUrl;
     iframe.style.width = "100%";
-    iframe.style.height = "400px"; // Maximum height of 200px
+    iframe.style.height = "200px"; // Maximum height of 200px
     iframe.style.border = "none";
     iframe.style.display = "block";
     return iframe;
@@ -39,48 +39,10 @@
       currentIframe = createIframe();
       firstDiv.parentNode.insertBefore(currentIframe, secondDiv);
       console.log("Iframe injected.");
+      clearInterval(pollIntervalId); // Stop polling once injected.
     }
   }
 
-  // Remove the iframe from the DOM and set the reference to null
-  function removeIframe() {
-    if (currentIframe) {
-      currentIframe.remove();
-      currentIframe = null;
-      console.log("Iframe removed.");
-    }
-  }
-
-  // Start polling to check for target elements if they are not yet available
-  function startPolling() {
-    pollIntervalId = setInterval(() => {
-      if (document.visibilityState === "visible") {
-        injectIframe();
-        if (currentIframe) {
-          clearInterval(pollIntervalId);
-          pollIntervalId = null;
-        }
-      }
-    }, 500);
-  }
-
-  // Initial poll to inject the iframe on page load
-  startPolling();
-
-  // Listen for visibility changes (i.e., tab switching)
-  document.addEventListener("visibilitychange", function () {
-    // if (document.visibilityState === "hidden") {
-    //   // When the tab is hidden, remove the iframe to close the websocket connection.
-    //   removeIframe();
-    //   console.log("Tab hidden: iframe removed.");
-    // } else if (document.visibilityState === "visible") {
-    //   // When the tab becomes visible again, re-inject the iframe.
-    //   injectIframe();
-    //   // If the target containers are not yet available, restart polling.
-    //   if (!currentIframe) {
-    //     startPolling();
-    //   }
-    //   console.log("Tab visible: iframe injected if container available.");
-    // }
-  });
+  // Start polling every 500ms until the target elements are available and the iframe is injected
+  pollIntervalId = setInterval(injectIframe, 500);
 })();

@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "onchainrank Injector",
-    "version": "1.2",
+    "version": "1.3",
     "description": "Injects the onchainrank charts iframe and provides a settings GUI for entering an API key.",
     "permissions": [
         "activeTab",
@@ -10,7 +10,7 @@
         "webRequestBlocking"
     ],
     "host_permissions": [
-        "app.onchainrank.com/*"
+        "https://app.onchainrank.com/*"
     ],
     "action": {
         "default_popup": "popup.html",
