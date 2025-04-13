@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>onchainrank Settings</title>
+    <title>OnChainRank Settings</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #fff;
+            background-color: #f0f2f5;
             color: #333;
             width: 300px;
         }
@@ -37,7 +37,8 @@
             display: block;
         }
 
-        input[type="text"] {
+        input[type="text"],
+        input[type="number"] {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
@@ -64,11 +65,15 @@
 
 <body>
     <div class="header">
-        <img src="ocr128.png" alt="OnChainRank Icon">
-        <h2>OnChainRank Settings</h2>
+        <img src="ocr128.png" alt="onchainrank Icon">
+        <h2>Settings</h2>
     </div>
     <label for="apiKey">API Key:</label>
     <input type="text" id="apiKey" placeholder="Enter API key" />
+
+    <label for="iframeHeight">Iframe Height (px):</label>
+    <input type="number" id="iframeHeight" placeholder="200" />
+
     <button id="saveBtn">Save</button>
     <script src="popup.js"></script>
 </body>
