@@ -1,33 +1,32 @@
 (function () {
-  // Extract the "address" parameter from the URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const address = urlParams.get("address");
-  if (!address) {
-    console.log("No address parameter found.");
-    return;
+  // Global variable to store the current "address" in the URL.
+  let currentAddress = null;
+  let currentIframe = null;
+  let pollIntervalId = null;
+
+  // Function to extract the address from the URL query parameters.
+  function getAddressFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("address");
   }
 
-  // Build the OnChainRank website URL using the extracted address (updated domain)
-  const onChainRankUrl = `https://app.onchainrank.com/single/${address}`;
+  // Build the OnChainRank website URL using the given address.
+  function buildOnChainRankUrl(address) {
+    return `https://app.onchainrank.com/single/${address}`;
+  }
 
-  // Global variable for iframe height, defaulting to 200px.
+  // Retrieve the stored iframe height; default to "200px" if not set.
   let iframeHeight = "200px";
-
-  // Retrieve stored iframe height from chrome.storage (if available)
   chrome.storage.local.get(["iframeHeight"], function (result) {
     if (result.iframeHeight) {
-      // Append "px" if necessary (assuming a numeric value was stored)
       iframeHeight = result.iframeHeight + "px";
     }
   });
 
-  let currentIframe = null;
-  let pollIntervalId = null;
-
-  // Create a new iframe element configured with the target URL and stored height.
-  function createIframe() {
+  // Create a new iframe element configured with the target URL and height.
+  function createIframe(address) {
     const iframe = document.createElement("iframe");
-    iframe.src = onChainRankUrl;
+    iframe.src = buildOnChainRankUrl(address);
     iframe.style.width = "100%";
     iframe.style.height = iframeHeight; // Use the stored height value.
     iframe.style.border = "none";
@@ -47,13 +46,59 @@
       ".ant-tabs.ant-tabs-top.ant-tabs-middle.flex.flex-col.flex-1.terminal-tabs.bg-grey-900.overflow-hidden.md\\:h-full.md\\:max-h-full.pt-1.z-50"
     );
     if (firstDiv && secondDiv) {
-      currentIframe = createIframe();
+      currentIframe = createIframe(currentAddress);
       firstDiv.parentNode.insertBefore(currentIframe, secondDiv);
       console.log("Iframe injected with height:", iframeHeight);
       clearInterval(pollIntervalId); // Stop polling once injected.
     }
   }
 
-  // Start polling every 500ms until the target elements are available and the iframe is injected.
-  pollIntervalId = setInterval(injectIframe, 500);
+  // Remove the iframe from the DOM and reset the reference.
+  function removeIframe() {
+    if (currentIframe) {
+      currentIframe.remove();
+      currentIframe = null;
+      console.log("Iframe removed.");
+    }
+  }
+
+  // Start polling every 500ms until the target elements are available and the iframe can be injected.
+  function startPolling() {
+    pollIntervalId = setInterval(injectIframe, 500);
+  }
+
+  // Check for URL changes periodically.
+  let lastUrl = window.location.href;
+  function monitorUrlChange() {
+    const currentUrl = window.location.href;
+    if (currentUrl !== lastUrl) {
+      lastUrl = currentUrl;
+      console.log("URL changed:", currentUrl);
+      handleUrlChange();
+    }
+  }
+
+  // Handles URL changes by checking the "address" query parameter.
+  function handleUrlChange() {
+    const newAddress = getAddressFromUrl();
+    if (newAddress !== currentAddress) {
+      // Update the current address.
+      currentAddress = newAddress;
+      // Remove the iframe if it exists.
+      removeIframe();
+      // If there's a valid address, start polling to inject a new iframe.
+      if (currentAddress) {
+        startPolling();
+      }
+    }
+  }
+
+  // On initial load, get the address and inject the iframe if available.
+  currentAddress = getAddressFromUrl();
+  if (currentAddress) {
+    startPolling();
+  }
+
+  // Monitor URL changes every 500ms.
+  setInterval(monitorUrlChange, 500);
 })();
