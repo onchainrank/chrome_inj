@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "onchainrank Injector",
-    "version": "1.4",
+    "version": "1.5",
     "description": "Adds the onchainrank chart and provides a settings GUI for entering an API key.",
     "permissions": [
         "activeTab",
