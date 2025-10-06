@@ -5,11 +5,7 @@
     "description": "Adds the onchainrank chart and provides a settings GUI for entering an API key.",
     "permissions": [
         "activeTab",
-        "storage",
-        "webRequest"
-    ],
-    "host_permissions": [
-        "https://app.onchainrank.com/*"
+        "storage"
     ],
     "icons": {
         "16": "ocr16.png",

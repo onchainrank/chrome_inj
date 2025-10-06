@@ -1,7 +1,7 @@
 (function () {
   let currentAddress = null;
   let currentIframe = null;
-  let pollIntervalId = null;
+  let observer = null;
 
   // Configurable values from storage
   let iframeHeight = "200px";
@@ -19,7 +19,7 @@
       // Only start if extension is enabled, we have an address, and an API key
       currentAddress = getAddressFromUrl();
       if (extensionEnabled && currentAddress && apiKey) {
-        startPolling();
+        startObserving();
       } else if (!extensionEnabled) {
         console.warn("onchainrank Injector: extension is disabled.");
       } else if (!apiKey) {
@@ -35,17 +35,17 @@
     if (area === "local" && changes.extensionEnabled) {
       extensionEnabled = changes.extensionEnabled.newValue;
       if (!extensionEnabled) {
-        // Extension disabled - remove iframe and stop polling
+        // Extension disabled - remove iframe and stop observing
         removeIframe();
-        if (pollIntervalId) {
-          clearInterval(pollIntervalId);
-          pollIntervalId = null;
+        if (observer) {
+          observer.disconnect();
+          observer = null;
         }
         console.log("onchainrank Injector: extension disabled, iframe removed.");
       } else {
-        // Extension enabled - start polling if we have address and API key
+        // Extension enabled - start observing if we have address and API key
         if (currentAddress && apiKey) {
-          startPolling();
+          startObserving();
           console.log("onchainrank Injector: extension enabled.");
         }
       }
@@ -75,9 +75,9 @@
   function injectIframe() {
     // Double-check extension is still enabled before injecting
     if (!extensionEnabled) {
-      if (pollIntervalId) {
-        clearInterval(pollIntervalId);
-        pollIntervalId = null;
+      if (observer) {
+        observer.disconnect();
+        observer = null;
       }
       return;
     }
@@ -92,7 +92,11 @@
       currentIframe = createIframe(currentAddress);
       firstDiv.parentNode.insertBefore(currentIframe, secondDiv);
       console.log("Iframe injected with height:", iframeHeight);
-      clearInterval(pollIntervalId);
+      // Stop observing once injected
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
     }
   }
 
@@ -103,13 +107,26 @@
     console.log("Iframe removed.");
   }
 
-  function startPolling() {
-    pollIntervalId = setInterval(injectIframe, 500);
+  function startObserving() {
+    // Try immediate injection first
+    injectIframe();
+
+    // If iframe wasn't injected, start observing DOM changes
+    if (!currentIframe) {
+      observer = new MutationObserver(() => {
+        injectIframe();
+      });
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
   }
 
-  // 3) Watch for SPA-style navigation
+  // 3) Watch for SPA-style navigation using navigation events
   let lastUrl = window.location.href;
-  setInterval(() => {
+
+  function checkUrlChange() {
     const currentUrl = window.location.href;
     if (currentUrl !== lastUrl) {
       lastUrl = currentUrl;
@@ -117,8 +134,21 @@
       if (newAddr !== currentAddress) {
         currentAddress = newAddr;
         removeIframe();
-        if (extensionEnabled && currentAddress && apiKey) startPolling();
+        if (extensionEnabled && currentAddress && apiKey) {
+          startObserving();
+        }
       }
     }
-  }, 500);
+  }
+
+  // Listen for browser navigation events
+  window.addEventListener('popstate', checkUrlChange);
+  window.addEventListener('hashchange', checkUrlChange);
+
+  // SPA navigation might not trigger standard events, use MutationObserver as fallback
+  const urlObserver = new MutationObserver(checkUrlChange);
+  urlObserver.observe(document.querySelector('title') || document.head, {
+    childList: true,
+    subtree: true
+  });
 })();
