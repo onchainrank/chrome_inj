@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "onchainrank Injector",
+    "name": "onchainrank DEX Plugin",
     "version": "1.5",
-    "description": "Adds the onchainrank chart and provides a settings GUI for entering an API key.",
+    "description": "Adds the advanced chart for trading meme coins on pump.fun and provides a settings GUI for entering an API key.",
     "permissions": [
         "activeTab",
         "storage"

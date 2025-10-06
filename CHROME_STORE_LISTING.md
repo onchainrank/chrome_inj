@@ -2,19 +2,19 @@
 
 ## Short Description (132 characters max)
 
-Embed onchainrank trading charts directly into Bullx NEO terminal for enhanced cryptocurrency analysis and real-time trading data.
+Embed onchainrank trading charts directly into DEX (pump.fun, Bullx) terminals for enhanced cryptocurrency analysis and real-time trading data.
 
 ## Detailed Description
 
-**Supercharge your Bullx terminal with onchainrank trading intelligence!**
+**Supercharge your DEX (pump.fun, Bullx) terminal with onchainrank trading intelligence!**
 
-onchainrank Injector seamlessly embeds powerful trading charts and analytics from onchainrank.com directly into your Bullx terminal interface. Get instant access to comprehensive trading data without switching tabs or losing focus.
+onchainrank DEX Plugin seamlessly embeds powerful trading charts and analytics from onchainrank.com directly into your DEX (pump.fun, Bullx) terminal interface. Get instant access to comprehensive trading data without switching tabs or losing focus.
 
 ### ✨ Key Features
 
 **🎯 Seamless Integration**
 
-- Automatically detects cryptocurrency addresses in Bullx terminal
+- Automatically detects cryptocurrency addresses in DEX (pump.fun, Bullx) terminal
 - Embeds relevant onchainrank charts directly into your trading interface
 - Updates dynamically as you navigate between different tokens
 
@@ -38,21 +38,21 @@ onchainrank Injector seamlessly embeds powerful trading charts and analytics fro
 
 ### 📋 Requirements
 
-- Active onchainrank.com account with API key
-- Access to Bullx NEO terminal (neo.bullx.io/terminal)
+- Active onchainrank.com account with API key (visit https://onchainrank.com)
+- Access to supported DEX (pump.fun, Bullx) terminals
 
 ### 🚀 Getting Started
 
 1. Install the extension
 2. Click the extension icon to open settings
-3. Enter your onchainrank API key
+3. Enter your onchainrank API key (get yours at https://onchainrank.com)
 4. Adjust iframe height if desired (default: 200px)
-5. Navigate to Bullx NEO terminal with any token address
+5. Navigate to a supported DEX (pump.fun, Bullx) terminal with any token address
 6. Watch as onchainrank charts appear automatically!
 
 ### 🛠️ How It Works
 
-The extension monitors your Bullx terminal URL for cryptocurrency addresses. When detected, it embeds an onchainrank iframe with relevant trading data for that specific token. As you switch between different tokens, the chart updates automatically to match your current selection.
+The extension monitors your DEX (pump.fun, Bullx) terminal URL for cryptocurrency addresses. When detected, it embeds an onchainrank iframe with relevant trading data for that specific token. As you switch between different tokens, the chart updates automatically to match your current selection.
 
 ### 🔐 Security & Privacy
 
@@ -64,7 +64,7 @@ Need help or found a bug? Please visit our GitHub repository or contact us throu
 
 ---
 
-**Note:** This is an unofficial extension and is not affiliated with or endorsed by Bullx or onchainrank. Requires separate accounts with both services.
+**Note:** This is an unofficial extension. Visit https://onchainrank.com to create an account and get your API key.
 
 ## Category
 
@@ -88,11 +88,11 @@ You'll need **at least 1 screenshot** (recommended 3-5):
 
 **Suggested Screenshots:**
 
-1. **Extension in Action** - Bullx terminal with embedded onchainrank iframe showing trading data
+1. **Extension in Action** - DEX (pump.fun, Bullx) terminal with embedded onchainrank iframe showing trading data
 2. **Settings Popup** - The configuration interface showing API key and height settings
-3. **Before/After Comparison** - Split screen showing Bullx terminal without and with the extension
+3. **Before/After Comparison** - Split screen showing DEX (pump.fun, Bullx) terminal without and with the extension
 4. **Multiple Token View** - Demonstrating automatic chart updates when switching tokens
-5. **Clean Interface** - Focus on the seamlessly integrated iframe within Bullx layout
+5. **Clean Interface** - Focus on the seamlessly integrated iframe within DEX (pump.fun, Bullx) layout
 
 ## Promotional Tile (Optional but Recommended)
 
@@ -106,7 +106,7 @@ YouTube or Google Drive link showing:
 
 - Extension installation
 - Settings configuration
-- Live usage in Bullx terminal
+- Live usage in DEX (pump.fun, Bullx) terminal
 - Chart updates when switching tokens
 
 Maximum length: 30 seconds recommended
@@ -123,16 +123,16 @@ Example URL format: `https://yourdomain.com/privacy-policy` or `https://yourname
 
 ## Single Purpose Description (Justification)
 
-This extension has a single purpose: to embed onchainrank trading charts into the Bullx NEO terminal interface. All requested permissions (activeTab, storage) are used solely to:
+This extension has a single purpose: to embed onchainrank trading charts into DEX (pump.fun, Bullx) terminal interfaces. All requested permissions (activeTab, storage) are used solely to:
 
-- Detect cryptocurrency addresses in the Bullx terminal URL
+- Detect cryptocurrency addresses in the DEX (pump.fun, Bullx) terminal URL
 - Inject iframe elements with onchainrank charts
 - Store user preferences (API key, iframe height) locally
 
 ## Permission Justifications
 
 **activeTab:**
-Required to interact with the Bullx NEO terminal page and inject iframe elements at the appropriate DOM locations.
+Required to interact with DEX (pump.fun, Bullx) terminal pages and inject iframe elements at the appropriate DOM locations.
 
 **storage:**
 Required to save user settings (API key, iframe height, extension state) locally in the browser for persistent configuration across sessions.

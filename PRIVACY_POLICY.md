@@ -1,10 +1,10 @@
-# Privacy Policy for onchainrank Injector
+# Privacy Policy for onchainrank DEX Plugin
 
 **Last Updated:** October 6, 2025
 
 ## Overview
 
-onchainrank Injector is a Chrome browser extension that embeds onchainrank trading data into the Bullx NEO terminal interface. This privacy policy explains what data we collect and how we use it.
+onchainrank DEX Plugin is a Chrome browser extension that embeds onchainrank trading data into DEX (pump.fun, Bullx) terminal interfaces. This privacy policy explains what data we collect and how we use it.
 
 ## Data Collection
 
@@ -26,7 +26,7 @@ The extension stores the following data **locally on your device only** using Ch
 When the extension is active and you have configured an API key:
 
 1. **onchainrank Service**: Your API key is included in iframe URLs to `https://app.onchainrank.com` for authentication purposes
-2. **Bullx Terminal**: The extension reads the cryptocurrency address from the Bullx terminal URL to display relevant data
+2. **DEX Terminals**: The extension reads the cryptocurrency address from DEX terminal URLs to display relevant data
 
 ## How We Use Your Data
 
@@ -39,7 +39,7 @@ When the extension is active and you have configured an API key:
 This extension interacts with:
 
 1. **onchainrank (app.onchainrank.com)**: Displays trading data in embedded iframes
-2. **Bullx NEO Terminal (neo.bullx.io)**: The extension injects content into this platform
+2. **DEX Terminals (e.g., neo.bullx.io)**: The extension injects content into these platforms
 
 Please review the privacy policies of these third-party services for information on their data practices.
 
@@ -70,8 +70,9 @@ For questions or concerns about this privacy policy, please contact us through:
 
 The extension requests the following Chrome permissions:
 
-- **activeTab**: Allows the extension to interact with the currently active Bullx terminal tab
+- **activeTab**: Allows the extension to interact with the currently active DEX terminal tab
 - **storage**: Stores your API key, iframe height preference, and extension state locally on your device
+- **Host Permission (neo.bullx.io/terminal)**: Required to read URL parameters and inject iframe elements into the Bullx terminal interface
 
 ## Data Retention
 

@@ -1,10 +1,10 @@
-# onchainrank Bullx NEO injector
+# onchainrank DEX Plugin
 
 ![image](https://github.com/user-attachments/assets/1e3fb411-7bb1-453e-9079-d109df40d5d5)
 
 ## Overview
 
-The **onchainrank Bullx NEO injector** is a Chrome extension that dynamically injects an iframe containing the onchainrank trading data into pages on `neo.bullx.io` based on an `address` query parameter. It also includes a settings GUI for entering an API key, which is automatically added as an `Authorization` header for HTTP requests sent to `http://localhost:3000/single/*`.
+The **onchainrank DEX Plugin** is a Chrome extension that dynamically injects an iframe containing the onchainrank trading data into pages on `neo.bullx.io` based on an `address` query parameter. It also includes a settings GUI for entering an API key.
 
 ## Disclaimer
 
@@ -13,8 +13,8 @@ This extension is designed to provide general information about interesting meme
 
 ## Features
 
-- **Dynamic Iframe Injection:**  
-  When a URL contains an `address` parameter, the extension injects an iframe that loads the URL `http://localhost:3000/single/{address}`. The iframe is styled to have a maximum height of 200px.
+- **Dynamic Iframe Injection:**
+  When a URL contains an `address` parameter, the extension injects an iframe that loads the URL `https://app.onchainrank.com/single/{address}`. The iframe height is configurable via the settings popup.
 
 - **Tab Visibility Management:**  
   The extension monitors tab visibility. When the tab is hidden, the iframe is removed (to close any unnecessary WebSocket connections). When the tab is visible again, the iframe is re-injected.
@@ -22,8 +22,8 @@ This extension is designed to provide general information about interesting meme
 - **API Key Settings:**  
   A settings popup allows users to enter and save an API key. This key is stored using Chrome's local storage.
 
-- **Request Interception:**  
-  A background service worker intercepts outgoing requests to `http://localhost:3000/single/*` and automatically appends an `Authorization` header with the stored API key.
+- **API Key Management:**
+  The API key is embedded directly in the iframe URL path for authentication with onchainrank.com.
 
 ## Requirements
 
@@ -48,8 +48,8 @@ This extension is designed to provide general information about interesting meme
 
 The extension will extract the `address` parameter and inject an iframe that loads:
 
-2. **Request Authorization:**  
-   The background service worker intercepts requests to `http://localhost:3000/single/*` and appends an `Authorization` header with the stored API key.
+2. **API Authentication:**
+   The API key is included in the iframe URL path for authentication with onchainrank.com.
 
 3. **Tab Visibility Management:**  
    When you switch to another tab, the extension removes the iframe to close WebSocket connections. When you return, the iframe is re-injected.
