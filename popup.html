@@ -20,7 +20,32 @@
         }
 
         label {
-            font-size: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input[type="password"],
+        input[type="number"] {
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background-color: #fafafa;
+            outline: none;
+        }
+
+        input[type="password"]:focus,
+        input[type="number"]:focus {
+            border-color: #007bff;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        input[type="password"]::placeholder,
+        input[type="number"]::placeholder {
+            color: #999;
         }
 
         #apiKeySection {
@@ -31,18 +56,20 @@
             display: grid;
             grid-template-columns: auto 1fr auto;
             gap: 0;
-            row-gap: 5px;
+            row-gap: 12px;
         }
 
         .form-grid label {
             text-align: left;
+            align-self: center;
         }
 
         #apiKeyStatus {
-            font-weight: bold;
-            color: green;
+            font-weight: 600;
+            color: #28a745;
             align-self: center;
-            margin-left: 5px;
+            margin-left: 8px;
+            font-size: 13px;
         }
 
         #toggleContainer {
@@ -69,7 +96,31 @@
         }
 
         #saveBtn {
-            margin-top: 10px;
+            margin-top: 12px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        #saveBtn:hover {
+            background-color: #0056b3;
+        }
+
+        #saveBtn:active {
+            transform: translateY(1px);
+        }
+
+        #saveMessage {
+            margin-left: 10px;
+            color: #28a745;
+            font-weight: 500;
+            font-size: 14px;
         }
 
         #description {

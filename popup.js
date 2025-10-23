@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load the saved API key, iframe height, and enabled state from storage
   chrome.storage.local.get(["apiKey", "iframeHeight", "extensionEnabled"], function (result) {
     if (result.apiKey) {
+      apiKeyInput.value = result.apiKey;
       updateApiKeyStatus(result.apiKey);
     }
     if (result.iframeHeight) {
